@@ -18,3 +18,43 @@ model User {
   email String  @unique
   name  String?
 }
+
+/// Enum para nivel educativo del candidato
+enum EducationLevel {
+  PRIMARY        /// Primaria
+  SECONDARY      /// Secundaria
+  TERTIARY       /// Terciaria
+  UNIVERSITY     /// Universitaria
+  POSTGRADUATE   /// Posgrado
+  DOCTORATE      /// Doctorado
+}
+
+/// Modelo principal de Candidato para el sistema ATS
+model Candidate {
+  id                      Int            @id @default(autoincrement()) /// ID autoincremental
+  firstName               String         @db.VarChar(100)              /// Nombre (obligatorio, máx 100)
+  lastName                String         @db.VarChar(100)              /// Apellido (obligatorio, máx 100)
+  email                   String         @unique                       /// Email único (obligatorio, formato válido, máx 191)
+  phone                   String                                         /// Teléfono (obligatorio, formato internacional)
+  educationLevel          EducationLevel                                /// Nivel educativo (enum, obligatorio)
+  institution             String         @db.VarChar(200)              /// Institución educativa (máx 200)
+  degree                  String         @db.VarChar(150)              /// Título obtenido (máx 150)
+  graduationYear          Int                                            /// Año de graduación (1950 a año actual + 4, validar en backend)
+  currentPosition         String         @db.VarChar(100)              /// Puesto actual (máx 100)
+  currentCompany          String         @db.VarChar(150)              /// Empresa actual (máx 150)
+  totalExperience         Int                                            /// Años de experiencia (0-50, validar en backend)
+  startDate               DateTime                                      /// Fecha de inicio laboral (no mayor a fecha actual)
+  isCurrentlyWorking      Boolean        @default(true)                 /// ¿Actualmente trabajando? (default: true)
+  endDate                 DateTime?                                     /// Fecha de fin laboral (opcional, debe ser > startDate si existe, validar en backend)
+  experienceDescription   String         @db.Text                       /// Descripción de experiencia (máx 2000)
+  cvPath                  String?                                       /// Ruta del archivo CV (opcional)
+  createdAt               DateTime       @default(now())                /// Fecha de creación (auto)
+  updatedAt               DateTime       @updatedAt                     /// Fecha de actualización (auto)
+
+  @@index([email])
+  @@index([firstName, lastName])
+}
+
+/// NOTA:
+/// - Validar en backend: formato de email, rango de graduationYear (1950-año actual+4), totalExperience (0-50), formato internacional de phone, endDate > startDate si existe.
+/// - Considerar agregar constraints adicionales en migraciones SQL si se requiere mayor robustez.

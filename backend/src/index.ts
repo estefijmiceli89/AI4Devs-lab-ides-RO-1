@@ -2,6 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import express from 'express';
 import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import candidateRoutes from './routes/candidate.routes';
+import cvRoutes from './routes/cv.routes';
 
 dotenv.config();
 const prisma = new PrismaClient();
@@ -11,14 +14,33 @@ export default prisma;
 
 const port = 3010;
 
-app.get('/', (req, res) => {
+// Configuración de CORS
+app.use(cors({
+  origin: 'http://localhost:5173', // URL del frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Middleware para parsear JSON
+app.use(express.json());
+
+// Rutas de la API
+app.use('/api/candidates', cvRoutes);
+app.use('/api/candidates', candidateRoutes);
+
+// Ruta de prueba
+app.get('/', (_req, res) => {
   res.send('Hola LTI!');
 });
 
-app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+// Middleware de manejo de errores
+app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
   console.error(err.stack);
-  res.type('text/plain'); 
-  res.status(500).send('Something broke!');
+  res.status(500).json({
+    success: false,
+    message: 'Error interno del servidor',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
 });
 
 app.listen(port, () => {
