@@ -28,4 +28,4 @@ export const Home: React.FC = () => {
       </Box>
     </Container>
   );
-}; 
+};

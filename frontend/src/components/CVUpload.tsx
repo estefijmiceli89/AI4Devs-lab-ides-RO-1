@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Box, Typography, Paper, CircularProgress } from '@mui/material';
+import { Box, Typography, Paper } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
@@ -15,38 +15,46 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(initialFile || null);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const file = acceptedFiles[0];
-    if (!file) return;
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0];
+      if (!file) return;
 
-    // Validar tipo de archivo
-    if (!['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'].includes(file.type)) {
-      setUploadStatus('error');
-      setErrorMessage('Solo se permiten archivos PDF y DOCX');
-      onFileSelect(null);
-      return;
-    }
+      // Validar tipo de archivo
+      if (
+        ![
+          'application/pdf',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ].includes(file.type)
+      ) {
+        setUploadStatus('error');
+        setErrorMessage('Solo se permiten archivos PDF y DOCX');
+        onFileSelect(null);
+        return;
+      }
 
-    // Validar tamaño (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      setUploadStatus('error');
-      setErrorMessage('El archivo no debe superar los 5MB');
-      onFileSelect(null);
-      return;
-    }
+      // Validar tamaño (5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setUploadStatus('error');
+        setErrorMessage('El archivo no debe superar los 5MB');
+        onFileSelect(null);
+        return;
+      }
 
-    setSelectedFile(file);
-    setUploadStatus('success');
-    onFileSelect(file);
-  }, [onFileSelect]);
+      setSelectedFile(file);
+      setUploadStatus('success');
+      onFileSelect(file);
+    },
+    [onFileSelect],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
       'application/pdf': ['.pdf'],
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx']
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
     },
-    maxFiles: 1
+    maxFiles: 1,
   });
 
   return (
@@ -78,10 +86,10 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
           {uploadStatus === 'success'
             ? `Archivo seleccionado: ${selectedFile?.name}`
             : uploadStatus === 'error'
-            ? errorMessage
-            : isDragActive
-            ? 'Suelta el archivo aquí'
-            : 'Arrastra y suelta tu CV aquí, o haz clic para seleccionar'}
+              ? errorMessage
+              : isDragActive
+                ? 'Suelta el archivo aquí'
+                : 'Arrastra y suelta tu CV aquí, o haz clic para seleccionar'}
         </Typography>
 
         <Typography variant="body2" color="text.secondary">
@@ -92,5 +100,4 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
   );
 };
 
-export default CVUpload; 
- 
+export default CVUpload;

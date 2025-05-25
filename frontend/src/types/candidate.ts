@@ -47,4 +47,4 @@ export interface CreateCandidateDto {
   experienceDescription: string;
 }
 
-export interface UpdateCandidateDto extends Partial<CreateCandidateDto> {}
+export type UpdateCandidateDto = Partial<CreateCandidateDto>;

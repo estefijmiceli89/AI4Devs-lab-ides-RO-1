@@ -27,8 +27,8 @@ describe('Candidate Model (Prisma)', () => {
         totalExperience: 3,
         startDate: new Date('2020-01-01'),
         isCurrentlyWorking: true,
-        experienceDescription: 'Desarrollo de software.'
-      }
+        experienceDescription: 'Desarrollo de software.',
+      },
     });
     expect(candidate).toHaveProperty('id');
     expect(candidate.email).toBe('test.user@email.com');
@@ -50,8 +50,8 @@ describe('Candidate Model (Prisma)', () => {
         totalExperience: 3,
         startDate: new Date('2020-01-01'),
         isCurrentlyWorking: true,
-        experienceDescription: 'Desarrollo de software.'
-      }
+        experienceDescription: 'Desarrollo de software.',
+      },
     });
     await expect(
       prisma.candidate.create({
@@ -69,9 +69,9 @@ describe('Candidate Model (Prisma)', () => {
           totalExperience: 2,
           startDate: new Date('2021-01-01'),
           isCurrentlyWorking: true,
-          experienceDescription: 'QA testing.'
-        }
-      })
+          experienceDescription: 'QA testing.',
+        },
+      }),
     ).rejects.toThrow();
   });
 
@@ -89,9 +89,9 @@ describe('Candidate Model (Prisma)', () => {
           totalExperience: 3,
           startDate: new Date('2020-01-01'),
           isCurrentlyWorking: true,
-          experienceDescription: 'Desarrollo de software.'
-        } as any
-      })
+          experienceDescription: 'Desarrollo de software.',
+        } as any,
+      }),
     ).rejects.toThrow();
   });
 
@@ -112,9 +112,9 @@ describe('Candidate Model (Prisma)', () => {
           totalExperience: 3,
           startDate: new Date('2020-01-01'),
           isCurrentlyWorking: true,
-          experienceDescription: 'Desarrollo de software.'
-        }
-      })
+          experienceDescription: 'Desarrollo de software.',
+        },
+      }),
     ).rejects.toThrow();
   });
 
@@ -135,9 +135,9 @@ describe('Candidate Model (Prisma)', () => {
           totalExperience: -1, // No está validado en DB, pero sí en backend
           startDate: new Date('2020-01-01'),
           isCurrentlyWorking: true,
-          experienceDescription: 'Desarrollo de software.'
-        }
-      })
+          experienceDescription: 'Desarrollo de software.',
+        },
+      }),
     ).resolves.toBeDefined(); // NOTA: Prisma no valida esto, debe validarse en backend
   });
-}); 
+});

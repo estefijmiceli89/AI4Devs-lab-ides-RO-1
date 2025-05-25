@@ -9,6 +9,7 @@
 **POST** `/api/candidates`
 
 - **Body (JSON):**
+
   ```json
   {
     "firstName": "Juan",
@@ -30,6 +31,7 @@
   ```
 
 - **Validaciones:**
+
   - Todos los campos obligatorios.
   - Email único y formato válido.
   - Teléfono internacional.
@@ -51,6 +53,7 @@
 **GET** `/api/candidates/:id`
 
 - **Validaciones:**
+
   - ID debe ser entero positivo.
 
 - **Respuestas:**
@@ -68,6 +71,7 @@
 **GET** `/api/candidates`
 
 - **Query Params:**
+
   - `limit` (default: 10, max: 100)
   - `offset` (default: 0)
   - `name` (filtro por nombre o apellido)
@@ -95,16 +99,22 @@
 **POST** `/api/candidates/:id/cv`
 
 - **Form Data:**
+
   - Campo: `cv` (archivo PDF o DOCX, máx. 5MB)
 
 - **Validaciones:**
+
   - ID válido y candidato existente.
   - Archivo obligatorio, tipo y tamaño.
 
 - **Respuestas:**
   - `200 OK`:
     ```json
-    { "success": true, "message": "CV subido y actualizado exitosamente", "data": { "cvPath": "uploads/cv/cv-1-123.pdf" } }
+    {
+      "success": true,
+      "message": "CV subido y actualizado exitosamente",
+      "data": { "cvPath": "uploads/cv/cv-1-123.pdf" }
+    }
     ```
   - `400 Bad Request`: ID inválido, sin archivo, tipo/tamaño incorrecto.
   - `404 Not Found`: Candidato no existe.
@@ -144,4 +154,4 @@
 
 - Los archivos de CV se almacenan en `backend/uploads/cv/`.
 - El campo `cvPath` guarda la ruta relativa al archivo.
-- El backend está preparado para integración con frontend React y para futuras mejoras (autenticación, roles, etc). 
+- El backend está preparado para integración con frontend React y para futuras mejoras (autenticación, roles, etc).

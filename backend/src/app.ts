@@ -20,11 +20,11 @@ app.use('/api/candidates', cvRoutes);
 app.use('/api/candidates', candidateRoutes);
 
 // Error handling middleware
-app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+app.use((err: any, _req: express.Request, res: express.Response) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
 console.log('Rutas activas:', listEndpoints(app));
 
-export default app; 
+export default app;

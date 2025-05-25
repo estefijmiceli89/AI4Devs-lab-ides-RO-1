@@ -18,74 +18,90 @@ import { EducationLevel, CreateCandidateDto } from '@/types/candidate';
 import CVUpload from './CVUpload';
 
 const schema = yup.object().shape({
-  firstName: yup.string()
+  firstName: yup
+    .string()
     .required('El nombre es requerido')
     .min(3, 'Debe tener al menos 3 letras')
     .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/, 'Solo letras'),
-  lastName: yup.string()
+  lastName: yup
+    .string()
     .required('El apellido es requerido')
     .min(3, 'Debe tener al menos 3 letras')
     .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/, 'Solo letras'),
   email: yup.string().email('Email inválido').required('El email es requerido'),
-  phone: yup.string()
+  phone: yup
+    .string()
     .required('El teléfono es requerido')
     .matches(/^[0-9]+$/, 'Solo números')
     .min(6, 'Debe tener al menos 6 números'),
   educationLevel: yup.string().required('El nivel de educación es requerido'),
-  institution: yup.string()
+  institution: yup
+    .string()
     .required('La institución es requerida')
     .min(3, 'Debe tener al menos 3 letras')
     .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/, 'Solo letras'),
-  degree: yup.string()
+  degree: yup
+    .string()
     .required('El título es requerido')
     .min(3, 'Debe tener al menos 3 letras')
     .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/, 'Solo letras'),
-  graduationYear: yup.number()
+  graduationYear: yup
+    .number()
     .required('El año de graduación es requerido')
     .min(1950, 'El año debe ser posterior a 1950')
     .max(new Date().getFullYear(), 'El año no puede ser en el futuro')
-    .test('is-four-digits', 'El año debe tener 4 dígitos', value => {
+    .test('is-four-digits', 'El año debe tener 4 dígitos', (value) => {
       if (!value) return true;
       return value.toString().length === 4;
     }),
-  currentPosition: yup.string()
+  currentPosition: yup
+    .string()
     .required('El puesto actual es requerido')
     .min(3, 'Debe tener al menos 3 letras')
     .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/, 'Solo letras'),
-  currentCompany: yup.string()
+  currentCompany: yup
+    .string()
     .required('La empresa actual es requerida')
     .min(3, 'Debe tener al menos 3 letras')
     .matches(/^[A-Za-zÁÉÍÓÚáéíóúÑñ ]+$/, 'Solo letras'),
-  totalExperience: yup.number()
+  totalExperience: yup
+    .number()
     .required('La experiencia total es requerida')
     .min(0, 'La experiencia no puede ser negativa'),
-  startDate: yup.string()
+  startDate: yup
+    .string()
     .required('La fecha de inicio es requerida')
-    .test('not-future', 'La fecha no puede ser futura', function(value) {
+    .test('not-future', 'La fecha no puede ser futura', function (value) {
       if (!value) return true;
       return new Date(value) <= new Date();
     })
-    .test('min-date', 'La fecha debe ser posterior a 1950', function(value) {
+    .test('min-date', 'La fecha debe ser posterior a 1950', function (value) {
       if (!value) return true;
       return new Date(value) >= new Date('1950-01-01');
     }),
   isCurrentlyWorking: yup.boolean(),
-  endDate: yup.string()
+  endDate: yup
+    .string()
     .nullable()
-    .test('not-future', 'La fecha no puede ser futura', function(value) {
+    .test('not-future', 'La fecha no puede ser futura', function (value) {
       if (!value) return true;
       return new Date(value) <= new Date();
     })
-    .test('min-date', 'La fecha debe ser posterior a 1950', function(value) {
+    .test('min-date', 'La fecha debe ser posterior a 1950', function (value) {
       if (!value) return true;
       return new Date(value) >= new Date('1950-01-01');
     })
-    .test('after-start', 'La fecha de fin debe ser posterior a la fecha de inicio', function(value) {
-      const startDate = this.parent.startDate;
-      if (!value || !startDate) return true;
-      return new Date(value) > new Date(startDate);
-    }),
-  experienceDescription: yup.string()
+    .test(
+      'after-start',
+      'La fecha de fin debe ser posterior a la fecha de inicio',
+      function (value) {
+        const startDate = this.parent.startDate;
+        if (!value || !startDate) return true;
+        return new Date(value) > new Date(startDate);
+      },
+    ),
+  experienceDescription: yup
+    .string()
     .required('La descripción de la experiencia es requerida')
     .min(3, 'Debe tener al menos 3 letras'),
 }) as yup.ObjectSchema<CreateCandidateDto>;
@@ -115,7 +131,12 @@ const defaultValues: CreateCandidateDto = {
 
 export const CandidateForm: React.FC<CandidateFormProps> = ({ onSubmit, initialData }) => {
   const [cvFile, setCvFile] = useState<File | null>(null);
-  const { control, handleSubmit, watch, formState: { errors } } = useForm<CreateCandidateDto>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<CreateCandidateDto>({
     resolver: yupResolver(schema),
     defaultValues: {
       ...defaultValues,
@@ -237,7 +258,9 @@ export const CandidateForm: React.FC<CandidateFormProps> = ({ onSubmit, initialD
                   InputLabelProps={{ shrink: true }}
                   sx={{ minWidth: 200, width: '100%' }}
                 >
-                  <MenuItem value="" disabled>Seleccionar</MenuItem>
+                  <MenuItem value="" disabled>
+                    Seleccionar
+                  </MenuItem>
                   {Object.values(EducationLevel).map((level) => (
                     <MenuItem key={level} value={level}>
                       {level}
@@ -295,7 +318,7 @@ export const CandidateForm: React.FC<CandidateFormProps> = ({ onSubmit, initialD
                   inputProps={{
                     min: 1950,
                     max: new Date().getFullYear(),
-                    maxLength: 4
+                    maxLength: 4,
                   }}
                 />
               )}
@@ -372,10 +395,10 @@ export const CandidateForm: React.FC<CandidateFormProps> = ({ onSubmit, initialD
                   InputLabelProps={{ shrink: true }}
                   error={!!errors.startDate}
                   helperText={errors.startDate?.message}
-                  value={field.value || ""}
+                  value={field.value || ''}
                   inputProps={{
                     min: '1950-01-01',
-                    max: new Date().toISOString().split('T')[0]
+                    max: new Date().toISOString().split('T')[0],
                   }}
                 />
               )}
@@ -395,10 +418,10 @@ export const CandidateForm: React.FC<CandidateFormProps> = ({ onSubmit, initialD
                     InputLabelProps={{ shrink: true }}
                     error={!!errors.endDate}
                     helperText={errors.endDate?.message}
-                    value={field.value || ""}
+                    value={field.value || ''}
                     inputProps={{
                       min: '1950-01-01',
-                      max: new Date().toISOString().split('T')[0]
+                      max: new Date().toISOString().split('T')[0],
                     }}
                   />
                 )}
@@ -449,10 +472,7 @@ export const CandidateForm: React.FC<CandidateFormProps> = ({ onSubmit, initialD
         </Typography>
         <Grid container spacing={3} justifyContent="center">
           <Grid item xs={12} md={8}>
-            <CVUpload
-              onFileSelect={setCvFile}
-              initialFile={cvFile}
-            />
+            <CVUpload onFileSelect={setCvFile} initialFile={cvFile} />
           </Grid>
         </Grid>
 
@@ -470,4 +490,4 @@ export const CandidateForm: React.FC<CandidateFormProps> = ({ onSubmit, initialD
       </Box>
     </Paper>
   );
-}; 
+};

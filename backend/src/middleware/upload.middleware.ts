@@ -1,6 +1,7 @@
+import { Request } from 'express';
+import type { Express } from 'express';
 import multer from 'multer';
 import path from 'path';
-import { Request } from 'express';
 import fs from 'fs';
 
 // Asegurar que el directorio de uploads existe
@@ -16,16 +17,23 @@ const storage = multer.diskStorage({
   },
   filename: (_req: Request, file: Express.Multer.File, cb) => {
     // Generar nombre único para el archivo
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
     cb(null, `cv-${uniqueSuffix}${path.extname(file.originalname)}`);
-  }
+  },
 });
 
 // Filtro de archivos
-const fileFilter = (_req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+const fileFilter = (
+  _req: Request,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback,
+) => {
   // Aceptar solo PDF y DOCX
-  const allowedMimeTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
-  
+  const allowedMimeTypes = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ];
+
   if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
@@ -39,6 +47,5 @@ export const upload = multer({
   fileFilter: fileFilter,
   limits: {
     fileSize: 5 * 1024 * 1024, // 5MB máximo
-  }
-}); 
- 
+  },
+});

@@ -11,12 +11,14 @@ export const uploadCV = async (req: Request, res: Response) => {
     const file = req.file;
 
     if (!file) {
-      return res.status(400).json({ error: 'No se proporcionó ningún archivo' });
+      return res
+        .status(400)
+        .json({ error: 'No se proporcionó ningún archivo' });
     }
 
     // Verificar si el candidato existe
     const candidate = await prisma.candidate.findUnique({
-      where: { id: parseInt(id) }
+      where: { id: parseInt(id) },
     });
 
     if (!candidate) {
@@ -34,19 +36,22 @@ export const uploadCV = async (req: Request, res: Response) => {
     }
 
     // Obtener la ruta relativa del archivo
-    const relativePath = path.relative(path.join(__dirname, '../../'), file.path);
+    const relativePath = path.relative(
+      path.join(__dirname, '../../'),
+      file.path,
+    );
 
     // Actualizar la ruta del CV en la base de datos
     const updatedCandidate = await prisma.candidate.update({
       where: { id: parseInt(id) },
       data: {
-        cvPath: relativePath
-      }
+        cvPath: relativePath,
+      },
     });
 
     return res.json({
       message: 'CV subido exitosamente',
-      candidate: updatedCandidate
+      candidate: updatedCandidate,
     });
   } catch (error) {
     console.error('Error al subir CV:', error);
@@ -58,7 +63,9 @@ export const uploadCV = async (req: Request, res: Response) => {
         console.error('Error al eliminar archivo temporal:', unlinkError);
       }
     }
-    return res.status(500).json({ error: 'Error al procesar la subida del CV' });
+    return res
+      .status(500)
+      .json({ error: 'Error al procesar la subida del CV' });
   }
 };
 
@@ -67,7 +74,7 @@ export const getCV = async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const candidate = await prisma.candidate.findUnique({
-      where: { id: parseInt(id) }
+      where: { id: parseInt(id) },
     });
 
     if (!candidate) {
@@ -75,7 +82,9 @@ export const getCV = async (req: Request, res: Response) => {
     }
 
     if (!candidate.cvPath) {
-      return res.status(404).json({ error: 'El candidato no tiene un CV subido' });
+      return res
+        .status(404)
+        .json({ error: 'El candidato no tiene un CV subido' });
     }
 
     const cvPath = path.join(__dirname, '../../', candidate.cvPath);
@@ -87,7 +96,8 @@ export const getCV = async (req: Request, res: Response) => {
     return res.download(cvPath);
   } catch (error) {
     console.error('Error al obtener CV:', error);
-    return res.status(500).json({ error: 'Error al procesar la solicitud del CV' });
+    return res
+      .status(500)
+      .json({ error: 'Error al procesar la solicitud del CV' });
   }
-}; 
- 
+};

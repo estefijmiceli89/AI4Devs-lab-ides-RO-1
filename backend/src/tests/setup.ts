@@ -19,4 +19,4 @@ beforeAll(async () => {
 // Disconnect Prisma after tests
 afterAll(async () => {
   await prisma.$disconnect();
-}); 
+});

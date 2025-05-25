@@ -10,5 +10,4 @@ router.post('/:id/cv', upload.single('cv'), uploadCV);
 // Ruta para descargar CV
 router.get('/:id/cv', getCV);
 
-export default router; 
- 
+export default router;

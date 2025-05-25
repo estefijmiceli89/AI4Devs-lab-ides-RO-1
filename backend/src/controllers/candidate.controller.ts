@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { PrismaClient, EducationLevel } from '@prisma/client';
 import { validateCandidate } from '../validators/candidate.validator';
-import path from 'path';
 import { z } from 'zod';
 
 const defaultPrisma = new PrismaClient();
@@ -18,7 +17,7 @@ const candidateSchema = z.object({
     EducationLevel.TERTIARY,
     EducationLevel.UNIVERSITY,
     EducationLevel.POSTGRADUATE,
-    EducationLevel.DOCTORATE
+    EducationLevel.DOCTORATE,
   ]),
   institution: z.string().min(1),
   degree: z.string().min(1),
@@ -37,7 +36,7 @@ const updateCandidateSchema = candidateSchema.partial();
 export const createCandidate = async (
   req: Request,
   res: Response,
-  prismaInstance?: PrismaClient
+  prismaInstance?: PrismaClient,
 ) => {
   const prisma = prismaInstance || defaultPrisma;
   try {
@@ -49,7 +48,7 @@ export const createCandidate = async (
       return res.status(400).json({
         success: false,
         message: 'Datos de candidato inválidos',
-        errors: validationResult.errors
+        errors: validationResult.errors,
       });
     }
 
@@ -70,23 +69,22 @@ export const createCandidate = async (
         startDate: new Date(req.body.startDate),
         isCurrentlyWorking: req.body.isCurrentlyWorking,
         endDate: req.body.endDate ? new Date(req.body.endDate) : null,
-        experienceDescription: req.body.experienceDescription
-      }
+        experienceDescription: req.body.experienceDescription,
+      },
     });
 
     return res.status(201).json({
       success: true,
       message: 'Candidato creado exitosamente',
-      data: candidate
+      data: candidate,
     });
-
   } catch (error: any) {
     // Manejar errores específicos de Prisma
     if (error.code === 'P2002') {
       return res.status(400).json({
         success: false,
         message: 'El email ya está registrado',
-        errors: ['email']
+        errors: ['email'],
       });
     }
 
@@ -94,7 +92,7 @@ export const createCandidate = async (
     return res.status(500).json({
       success: false,
       message: 'Error interno del servidor',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 };
@@ -102,7 +100,7 @@ export const createCandidate = async (
 export const getCandidateById = async (
   req: Request,
   res: Response,
-  prismaInstance?: PrismaClient
+  prismaInstance?: PrismaClient,
 ) => {
   const prisma = prismaInstance || defaultPrisma;
   const { id } = req.params;
@@ -112,159 +110,32 @@ export const getCandidateById = async (
     return res.status(404).json({
       success: false,
       message: 'ID de candidato inválido',
-      errors: ['id']
+      errors: ['id'],
     });
   }
 
   try {
     const candidate = await prisma.candidate.findUnique({
-      where: { id: candidateId }
+      where: { id: candidateId },
     });
     if (!candidate) {
       return res.status(404).json({
         success: false,
         message: 'Candidato no encontrado',
-        errors: ['not_found']
+        errors: ['not_found'],
       });
     }
     return res.status(200).json({
       success: true,
       message: 'Candidato encontrado',
-      data: candidate
+      data: candidate,
     });
   } catch (error: any) {
     console.error('Error al obtener candidato:', error);
     return res.status(500).json({
       success: false,
       message: 'Error interno del servidor',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
-  }
-};
-
-export const listCandidates = async (
-  req: Request,
-  res: Response,
-  prismaInstance?: PrismaClient
-) => {
-  const prisma = prismaInstance || defaultPrisma;
-  // Paginación
-  const limit = Math.max(1, Math.min(parseInt(req.query.limit as string) || 10, 100));
-  const offset = Math.max(0, parseInt(req.query.offset as string) || 0);
-
-  // Filtros
-  const { name, email, educationLevel, minExperience, maxExperience } = req.query;
-  const where: any = {};
-  if (name) {
-    where.OR = [
-      { firstName: { contains: name, mode: 'insensitive' } },
-      { lastName: { contains: name, mode: 'insensitive' } }
-    ];
-  }
-  if (email) {
-    where.email = { contains: email as string, mode: 'insensitive' };
-  }
-  if (educationLevel) {
-    where.educationLevel = educationLevel;
-  }
-  if (minExperience || maxExperience) {
-    where.totalExperience = {};
-    if (minExperience) where.totalExperience.gte = parseInt(minExperience as string);
-    if (maxExperience) where.totalExperience.lte = parseInt(maxExperience as string);
-  }
-
-  // Ordenamiento
-  let orderBy: any = { createdAt: 'desc' };
-  if (req.query.orderBy && req.query.order) {
-    orderBy = { [req.query.orderBy as string]: req.query.order };
-  }
-
-  try {
-    const [candidates, total] = await Promise.all([
-      prisma.candidate.findMany({
-        where,
-        skip: offset,
-        take: limit,
-        orderBy
-      }),
-      prisma.candidate.count({ where })
-    ]);
-
-    return res.status(200).json({
-      success: true,
-      message: 'Lista de candidatos',
-      data: candidates,
-      meta: {
-        total,
-        limit,
-        offset,
-        count: candidates.length
-      }
-    });
-  } catch (error: any) {
-    console.error('Error al listar candidatos:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
-  }
-};
-
-export const uploadCandidateCv = async (
-  req: Request & { file?: Express.Multer.File },
-  res: Response,
-  prismaInstance?: PrismaClient
-) => {
-  const prisma = prismaInstance || defaultPrisma;
-  const { id } = req.params;
-  const candidateId = parseInt(id, 10);
-
-  if (isNaN(candidateId) || candidateId <= 0) {
-    return res.status(400).json({
-      success: false,
-      message: 'ID de candidato inválido',
-      errors: ['id']
-    });
-  }
-
-  if (!req.file) {
-    return res.status(400).json({
-      success: false,
-      message: 'No se subió ningún archivo',
-      errors: ['file']
-    });
-  }
-
-  try {
-    // Verificar que el candidato existe
-    const candidate = await prisma.candidate.findUnique({ where: { id: candidateId } });
-    if (!candidate) {
-      return res.status(404).json({
-        success: false,
-        message: 'Candidato no encontrado',
-        errors: ['not_found']
-      });
-    }
-
-    // Actualizar el campo cvPath
-    const relativePath = path.relative(path.join(__dirname, '../../'), req.file.path);
-    const updated = await prisma.candidate.update({
-      where: { id: candidateId },
-      data: { cvPath: relativePath }
-    });
-
-    return res.status(200).json({
-      success: true,
-      message: 'CV subido y actualizado exitosamente',
-      data: { cvPath: updated.cvPath }
-    });
-  } catch (error: any) {
-    console.error('Error al subir CV:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
   }
 };
@@ -295,7 +166,7 @@ export const candidateController = {
           totalPages: Math.ceil(total / limit),
         },
       });
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Error fetching candidates' });
     }
   },
@@ -317,7 +188,7 @@ export const candidateController = {
       }
       res.json(candidate);
       return;
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Internal server error' });
       return;
     }
@@ -334,7 +205,9 @@ export const candidateController = {
           graduationYear: Number(validatedData.graduationYear),
           totalExperience: Number(validatedData.totalExperience),
           startDate: new Date(validatedData.startDate),
-          endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
+          endDate: validatedData.endDate
+            ? new Date(validatedData.endDate)
+            : null,
         },
       });
       return res.status(201).json(candidate);
@@ -372,7 +245,7 @@ export const candidateController = {
       });
       res.json(updatedCandidate);
       return;
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Internal server error' });
       return;
     }
@@ -398,9 +271,9 @@ export const candidateController = {
       });
       res.status(204).send();
       return;
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Internal server error' });
       return;
     }
   },
-}; 
+};

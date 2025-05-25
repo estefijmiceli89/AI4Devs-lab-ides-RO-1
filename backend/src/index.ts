@@ -1,25 +1,24 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import candidateRoutes from './routes/candidate.routes';
 import cvRoutes from './routes/cv.routes';
 
 dotenv.config();
-const prisma = new PrismaClient();
 
 export const app = express();
-export default prisma;
 
 const port = 3010;
 
 // Configuración de CORS
-app.use(cors({
-  origin: 'http://localhost:5173', // URL del frontend
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // URL del frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+);
 
 // Middleware para parsear JSON
 app.use(express.json());
@@ -34,12 +33,12 @@ app.get('/', (_req, res) => {
 });
 
 // Middleware de manejo de errores
-app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+app.use((err: any, _req: Request, res: Response) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,
     message: 'Error interno del servidor',
-    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined,
   });
 });
 

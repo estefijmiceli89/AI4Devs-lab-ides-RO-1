@@ -25,26 +25,18 @@ export const AddCandidate: React.FC = () => {
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
       <CandidateForm onSubmit={handleSubmit} />
-      
-      <Snackbar
-        open={!!error}
-        autoHideDuration={6000}
-        onClose={() => setError(null)}
-      >
+
+      <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>
         <Alert severity="error" onClose={() => setError(null)}>
           {error}
         </Alert>
       </Snackbar>
 
-      <Snackbar
-        open={success}
-        autoHideDuration={2000}
-        onClose={() => setSuccess(false)}
-      >
+      <Snackbar open={success} autoHideDuration={2000} onClose={() => setSuccess(false)}>
         <Alert severity="success" onClose={() => setSuccess(false)}>
           Candidato creado exitosamente
         </Alert>
       </Snackbar>
     </Container>
   );
-}; 
+};

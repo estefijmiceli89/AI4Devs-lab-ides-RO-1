@@ -18,4 +18,4 @@ router.put('/:id', candidateController.updateCandidate);
 // DELETE /api/candidates/:id - Delete a candidate
 router.delete('/:id', candidateController.deleteCandidate);
 
-export default router; 
+export default router;

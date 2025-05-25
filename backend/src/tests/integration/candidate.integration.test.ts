@@ -29,7 +29,7 @@ describe('Candidate API Integration Tests', () => {
     totalExperience: 5,
     startDate: '2020-01-01',
     isCurrentlyWorking: true,
-    experienceDescription: 'Desarrollo de aplicaciones web'
+    experienceDescription: 'Desarrollo de aplicaciones web',
   };
 
   let createdCandidateId: string;
@@ -44,7 +44,7 @@ describe('Candidate API Integration Tests', () => {
       expect(response.body).toHaveProperty('id');
       expect(response.body.firstName).toBe(testCandidate.firstName);
       expect(response.body.email).toBe(testCandidate.email);
-      
+
       createdCandidateId = response.body.id;
     });
 
@@ -56,7 +56,7 @@ describe('Candidate API Integration Tests', () => {
         skills: [], // Invalid empty skills
         experience: -1, // Invalid negative experience
         education: '', // Invalid empty education
-        status: 'INVALID' // Invalid status
+        status: 'INVALID', // Invalid status
       };
 
       const response = await request(app)
@@ -83,7 +83,7 @@ describe('Candidate API Integration Tests', () => {
         startDate: '2020-01-01',
         isCurrentlyWorking: true,
         experienceDescription: 'Desarrollo de software',
-        endDate: null
+        endDate: null,
       };
       const response = await request(app)
         .post('/api/candidates')
@@ -98,9 +98,7 @@ describe('Candidate API Integration Tests', () => {
 
   describe('GET /api/candidates', () => {
     it('should return paginated list of candidates', async () => {
-      const response = await request(app)
-        .get('/api/candidates')
-        .expect(200);
+      const response = await request(app).get('/api/candidates').expect(200);
 
       expect(response.body).toHaveProperty('data');
       expect(response.body).toHaveProperty('meta');
@@ -122,9 +120,7 @@ describe('Candidate API Integration Tests', () => {
     });
 
     it('should return 404 for non-existent candidate', async () => {
-      await request(app)
-        .get('/api/candidates/non-existent-id')
-        .expect(404);
+      await request(app).get('/api/candidates/non-existent-id').expect(404);
     });
   });
 
@@ -132,7 +128,7 @@ describe('Candidate API Integration Tests', () => {
     it('should update a candidate', async () => {
       const updateData = {
         firstName: 'John Updated',
-        totalExperience: 6
+        totalExperience: 6,
       };
 
       const response = await request(app)
@@ -165,9 +161,7 @@ describe('Candidate API Integration Tests', () => {
     });
 
     it('should return 404 when deleting non-existent candidate', async () => {
-      await request(app)
-        .delete('/api/candidates/non-existent-id')
-        .expect(404);
+      await request(app).delete('/api/candidates/non-existent-id').expect(404);
     });
   });
-}); 
+});

@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { Candidate, CreateCandidateDto, UpdateCandidateDto } from '../types/candidate';
+import { CreateCandidateDto, UpdateCandidateDto } from '../types/candidate';
 
 const API_URL = 'http://localhost:3010/api';
 
 export const candidateService = {
   async getAllCandidates(page = 1, limit = 10) {
     const response = await axios.get(`${API_URL}/candidates`, {
-      params: { page, limit }
+      params: { page, limit },
     });
     return response.data;
   },
@@ -57,5 +57,5 @@ export const candidateService = {
       },
     });
     return response.data;
-  }
-}; 
+  },
+};

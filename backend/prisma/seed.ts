@@ -21,7 +21,8 @@ async function main() {
       totalExperience: 5,
       startDate: new Date('2019-01-01'),
       isCurrentlyWorking: true,
-      experienceDescription: 'Desarrollo de aplicaciones web y móviles usando React y Node.js'
+      experienceDescription:
+        'Desarrollo de aplicaciones web y móviles usando React y Node.js',
     },
     {
       firstName: 'María',
@@ -37,7 +38,8 @@ async function main() {
       totalExperience: 3,
       startDate: new Date('2021-03-01'),
       isCurrentlyWorking: true,
-      experienceDescription: 'Análisis de datos y machine learning para predicción de tendencias'
+      experienceDescription:
+        'Análisis de datos y machine learning para predicción de tendencias',
     },
     {
       firstName: 'Carlos',
@@ -54,7 +56,8 @@ async function main() {
       startDate: new Date('2018-06-01'),
       endDate: new Date('2023-12-31'),
       isCurrentlyWorking: false,
-      experienceDescription: 'Gestión de proyectos de transformación digital y mejora de procesos'
+      experienceDescription:
+        'Gestión de proyectos de transformación digital y mejora de procesos',
     },
     {
       firstName: 'Ana',
@@ -70,7 +73,8 @@ async function main() {
       totalExperience: 4,
       startDate: new Date('2022-01-01'),
       isCurrentlyWorking: true,
-      experienceDescription: 'Investigación en deep learning y procesamiento de lenguaje natural'
+      experienceDescription:
+        'Investigación en deep learning y procesamiento de lenguaje natural',
     },
     {
       firstName: 'Luis',
@@ -86,13 +90,14 @@ async function main() {
       totalExperience: 4,
       startDate: new Date('2019-08-01'),
       isCurrentlyWorking: true,
-      experienceDescription: 'Estrategias de marketing digital y gestión de campañas publicitarias'
-    }
+      experienceDescription:
+        'Estrategias de marketing digital y gestión de campañas publicitarias',
+    },
   ];
 
   for (const candidate of candidates) {
     await prisma.candidate.create({
-      data: candidate
+      data: candidate,
     });
   }
 
@@ -106,4 +111,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-  }); 
+  });

@@ -21,10 +21,10 @@ export const validateCandidate = (data: any): ValidationResult => {
     'currentPosition',
     'currentCompany',
     'totalExperience',
-    'startDate'
+    'startDate',
   ];
 
-  requiredFields.forEach(field => {
+  requiredFields.forEach((field) => {
     if (!data[field]) {
       errors.push(`El campo ${field} es requerido`);
     }
@@ -37,7 +37,9 @@ export const validateCandidate = (data: any): ValidationResult => {
 
   // Validar teléfono (formato internacional)
   if (data.phone && !isValidPhone(data.phone)) {
-    errors.push('El teléfono debe tener formato internacional (ej: +1234567890)');
+    errors.push(
+      'El teléfono debe tener formato internacional (ej: +1234567890)',
+    );
   }
 
   // Validar nivel de educación
@@ -53,7 +55,9 @@ export const validateCandidate = (data: any): ValidationResult => {
     const year = parseInt(data.graduationYear);
     const currentYear = new Date().getFullYear();
     if (isNaN(year) || year < 1950 || year > currentYear + 4) {
-      errors.push('El año de graduación debe estar entre 1950 y ' + (currentYear + 4));
+      errors.push(
+        'El año de graduación debe estar entre 1950 y ' + (currentYear + 4),
+      );
     }
   }
 
@@ -83,7 +87,7 @@ export const validateCandidate = (data: any): ValidationResult => {
 
   return {
     isValid: errors.length === 0,
-    errors
+    errors,
   };
 };
 
@@ -96,4 +100,4 @@ const isValidEmail = (email: string): boolean => {
 const isValidPhone = (phone: string): boolean => {
   const phoneRegex = /^\+[1-9]\d{1,14}$/;
   return phoneRegex.test(phone);
-}; 
+};
