@@ -23,7 +23,16 @@ export const AddCandidate: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 4 }}>
+    <Container
+      maxWidth="sm"
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        py: { xs: 2, sm: 4 },
+      }}
+    >
       <CandidateForm onSubmit={handleSubmit} />
 
       <Snackbar open={!!error} autoHideDuration={6000} onClose={() => setError(null)}>

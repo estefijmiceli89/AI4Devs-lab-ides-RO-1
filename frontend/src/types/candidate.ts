@@ -1,14 +1,13 @@
 export enum EducationLevel {
-  PRIMARY = 'PRIMARY',
-  SECONDARY = 'SECONDARY',
-  TERTIARY = 'TERTIARY',
-  UNIVERSITY = 'UNIVERSITY',
-  POSTGRADUATE = 'POSTGRADUATE',
-  DOCTORATE = 'DOCTORATE',
+  SECUNDARIO = 'Secundario',
+  TERCIARIO = 'Terciario',
+  UNIVERSITARIO = 'Universitario',
+  POSGRADO = 'Posgrado',
+  DOCTORADO = 'Doctorado',
 }
 
 export interface Candidate {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -22,7 +21,7 @@ export interface Candidate {
   totalExperience: number;
   startDate: string;
   isCurrentlyWorking: boolean;
-  endDate?: string | null;
+  endDate: string | null;
   experienceDescription: string;
   cvPath?: string | null;
   createdAt: string;
@@ -43,7 +42,7 @@ export interface CreateCandidateDto {
   totalExperience: number;
   startDate: string;
   isCurrentlyWorking: boolean;
-  endDate?: string | null;
+  endDate: string | null;
   experienceDescription: string;
 }
 

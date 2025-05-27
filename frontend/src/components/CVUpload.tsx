@@ -1,16 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 
 interface CVUploadProps {
-  onFileSelect: (file: File | null) => void;
+  onFileSelect?: (file: File | null) => void;
   initialFile?: File | null;
 }
 
-const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
+export const CVUpload = ({ onFileSelect, initialFile }: CVUploadProps) => {
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(initialFile || null);
@@ -29,7 +29,7 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
       ) {
         setUploadStatus('error');
         setErrorMessage('Solo se permiten archivos PDF y DOCX');
-        onFileSelect(null);
+        onFileSelect?.(null);
         return;
       }
 
@@ -37,13 +37,13 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
       if (file.size > 5 * 1024 * 1024) {
         setUploadStatus('error');
         setErrorMessage('El archivo no debe superar los 5MB');
-        onFileSelect(null);
+        onFileSelect?.(null);
         return;
       }
 
       setSelectedFile(file);
       setUploadStatus('success');
-      onFileSelect(file);
+      onFileSelect?.(file);
     },
     [onFileSelect],
   );
@@ -56,6 +56,12 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
     },
     maxFiles: 1,
   });
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    setSelectedFile(file);
+    onFileSelect?.(file);
+  };
 
   return (
     <Paper
@@ -73,6 +79,18 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
       }}
     >
       <input {...getInputProps()} />
+      <input
+        type="file"
+        accept=".pdf,.doc,.docx"
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
+        id="cv-upload"
+      />
+      <label htmlFor="cv-upload">
+        <Button component="span" variant="contained" startIcon={<CloudUploadIcon />} sx={{ mb: 2 }}>
+          Seleccionar CV
+        </Button>
+      </label>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
         {uploadStatus === 'success' ? (
           <CheckCircleIcon color="success" sx={{ fontSize: 40 }} />
@@ -93,7 +111,7 @@ const CVUpload: React.FC<CVUploadProps> = ({ onFileSelect, initialFile }) => {
         </Typography>
 
         <Typography variant="body2" color="text.secondary">
-          Formatos aceptados: PDF, DOCX (máximo 5MB)
+          Formatos aceptados: PDF, DOC, DOCX
         </Typography>
       </Box>
     </Paper>

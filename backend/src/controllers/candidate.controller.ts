@@ -9,15 +9,19 @@ const defaultPrisma = new PrismaClient();
 const candidateSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
-  email: z.string().email(),
+  email: z
+    .string()
+    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, {
+      message: 'Email inválido. Debe tener el formato nombre@dominio.tld',
+    }),
   phone: z.string().min(1),
   educationLevel: z.enum([
-    EducationLevel.PRIMARY,
-    EducationLevel.SECONDARY,
-    EducationLevel.TERTIARY,
-    EducationLevel.UNIVERSITY,
-    EducationLevel.POSTGRADUATE,
-    EducationLevel.DOCTORATE,
+    'Primaria',
+    'Secundaria',
+    'Terciaria',
+    'Universitaria',
+    'Posgrado',
+    'Doctorado',
   ]),
   institution: z.string().min(1),
   degree: z.string().min(1),
@@ -32,70 +36,6 @@ const candidateSchema = z.object({
 });
 
 const updateCandidateSchema = candidateSchema.partial();
-
-export const createCandidate = async (
-  req: Request,
-  res: Response,
-  prismaInstance?: PrismaClient,
-) => {
-  const prisma = prismaInstance || defaultPrisma;
-  try {
-    // Log de los datos recibidos
-    console.log('Datos recibidos en createCandidate:', req.body);
-    // Validar datos del candidato
-    const validationResult = validateCandidate(req.body);
-    if (!validationResult.isValid) {
-      return res.status(400).json({
-        success: false,
-        message: 'Datos de candidato inválidos',
-        errors: validationResult.errors,
-      });
-    }
-
-    // Crear el candidato en la base de datos
-    const candidate = await prisma.candidate.create({
-      data: {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        email: req.body.email,
-        phone: req.body.phone,
-        educationLevel: req.body.educationLevel as EducationLevel,
-        institution: req.body.institution,
-        degree: req.body.degree,
-        graduationYear: req.body.graduationYear,
-        currentPosition: req.body.currentPosition,
-        currentCompany: req.body.currentCompany,
-        totalExperience: req.body.totalExperience,
-        startDate: new Date(req.body.startDate),
-        isCurrentlyWorking: req.body.isCurrentlyWorking,
-        endDate: req.body.endDate ? new Date(req.body.endDate) : null,
-        experienceDescription: req.body.experienceDescription,
-      },
-    });
-
-    return res.status(201).json({
-      success: true,
-      message: 'Candidato creado exitosamente',
-      data: candidate,
-    });
-  } catch (error: any) {
-    // Manejar errores específicos de Prisma
-    if (error.code === 'P2002') {
-      return res.status(400).json({
-        success: false,
-        message: 'El email ya está registrado',
-        errors: ['email'],
-      });
-    }
-
-    console.error('Error al crear candidato:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Error interno del servidor',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    });
-  }
-};
 
 export const getCandidateById = async (
   req: Request,

@@ -21,12 +21,12 @@ model User {
 
 /// Enum para nivel educativo del candidato
 enum EducationLevel {
-  PRIMARY        /// Primaria
-  SECONDARY      /// Secundaria
-  TERTIARY       /// Terciaria
-  UNIVERSITY     /// Universitaria
-  POSTGRADUATE   /// Posgrado
-  DOCTORATE      /// Doctorado
+  Primaria
+  Secundaria
+  Terciaria
+  Universitaria
+  Posgrado
+  Doctorado
 }
 
 /// Modelo principal de Candidato para el sistema ATS
