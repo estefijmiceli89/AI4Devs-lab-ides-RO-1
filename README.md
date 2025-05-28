@@ -1,108 +1,201 @@
-# LTI - Sistema de Seguimiento de Talento
+# AI4Devs - Sistema de Gestión de Candidatos
 
-Este proyecto es una aplicación full-stack con un frontend en React y un backend en Express usando Prisma como ORM. El frontend se inicia con Create React App y el backend está escrito en TypeScript.
+Sistema full-stack para gestión de candidatos con autocompletado inteligente y validación en tiempo real.
 
-## Explicación de Directorios y Archivos
+## 🚀 Características
 
-- `backend/`: Contiene el código del lado del servidor escrito en Node.js.
-  - `src/`: Contiene el código fuente para el backend.
-    - `index.ts`: El punto de entrada para el servidor backend.
-  - `prisma/`: Contiene el archivo de esquema de Prisma para ORM.
-  - `tsconfig.json`: Archivo de configuración de TypeScript.
-  - `.env`: Contiene las variables de entorno.
-- `frontend/`: Contiene el código del lado del cliente escrito en React.
-  - `src/`: Contiene el código fuente para el frontend.
-  - `public/`: Contiene archivos estáticos como el archivo HTML e imágenes.
-  - `build/`: Contiene la construcción lista para producción del frontend.
-- `docker-compose.yml`: Contiene la configuración de Docker Compose para gestionar los servicios de tu aplicación.
-- `README.md`: Este archivo contiene información sobre el proyecto e instrucciones sobre cómo ejecutarlo.
+- ✅ **Autocompletado inteligente** en campos del formulario basado en datos históricos
+- ✅ **Validación en tiempo real** mientras el usuario escribe
+- ✅ **Notificaciones toast** para feedback inmediato
+- ✅ **Subida de archivos CV** con validación
+- ✅ **Interfaz responsive** con Material-UI
+- ✅ **API REST** robusta con validación de datos
+- ✅ **Base de datos PostgreSQL** con Prisma ORM
 
-## Estructura del Proyecto
+## 📋 Prerrequisitos
 
-El proyecto está dividido en dos directorios principales: `frontend` y `backend`.
+Antes de comenzar, asegúrate de tener instalado:
 
-### Frontend
+- **Node.js** (versión 18 o superior)
+- **npm** (viene con Node.js)
+- **Docker** y **Docker Compose**
+- **Git**
 
-El frontend es una aplicación React y sus archivos principales están ubicados en el directorio `src`. El directorio `public` contiene activos estáticos y el directorio `build` contiene la construcción de producción de la aplicación.
+## 🛠️ Instalación y Configuración
 
-### Backend
+### 1. Clonar el Repositorio
 
-El backend es una aplicación Express escrita en TypeScript.
+```bash
+git clone <url-del-repositorio>
+cd AI4Devs-lab-ides-RO-1
+```
 
-- El directorio `src` contiene el código fuente
-- El directorio `prisma` contiene el esquema de Prisma.
+### 2. Configurar Base de Datos
 
-## Primeros Pasos
+```bash
+# Iniciar PostgreSQL con Docker
+docker-compose up -d
 
-Para comenzar con este proyecto, sigue estos pasos:
+# Verificar que el contenedor esté corriendo
+docker ps
+```
 
-1. Clona el repositorio.
-2. Instala las dependencias para el frontend y el backend:
+**Detalles de conexión a la base de datos:**
 
-```sh
-cd frontend
+- Host: `localhost`
+- Puerto: `5432`
+- Usuario: `postgres`
+- Contraseña: `password`
+- Base de datos: `mydatabase`
+
+### 3. Configurar Backend
+
+```bash
+# Navegar al directorio backend
+cd backend
+
+# Instalar dependencias
 npm install
 
-cd ../backend
-npm install
-```
+# Configurar variables de entorno
+cp .env.example .env
+# Editar .env con tus configuraciones
 
-3. Construye el servidor backend:
+# Ejecutar migraciones de Prisma
+npx prisma migrate dev
+npx prisma generate
 
-```
-cd backend
-npm run build
-```
-
-4. Inicia el servidor backend:
-
-```
-cd backend
+# Iniciar servidor de desarrollo
 npm run dev
 ```
 
-5. En una nueva ventana de terminal, construye el servidor frontend:
+El backend estará disponible en: `http://localhost:3010`
 
-```
+### 4. Configurar Frontend
+
+```bash
+# Navegar al directorio frontend (desde la raíz)
 cd frontend
-npm run build
+
+# Instalar dependencias
+npm install
+
+# Iniciar servidor de desarrollo
+npm run dev
 ```
 
-6. Inicia el servidor frontend:
+El frontend estará disponible en: `http://localhost:5173` (Vite) o `http://localhost:5174`
+
+## 📁 Estructura del Proyecto
 
 ```
-cd frontend
-npm start
+AI4Devs-lab-ides-RO-1/
+├── backend/                 # Servidor Express + TypeScript
+│   ├── src/
+│   │   ├── controllers/     # Controladores de la API
+│   │   ├── routes/         # Rutas de la API
+│   │   ├── middleware/     # Middlewares
+│   │   └── index.ts        # Punto de entrada
+│   ├── prisma/             # Esquemas y migraciones
+│   ├── uploads/            # Archivos subidos
+│   └── package.json
+├── frontend/               # Aplicación React + TypeScript
+│   ├── src/
+│   │   ├── components/     # Componentes React
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── services/       # Servicios API
+│   │   ├── types/          # Tipos TypeScript
+│   │   └── App.tsx         # Componente principal
+│   └── package.json
+├── docker-compose.yml      # Configuración PostgreSQL
+└── README.md
 ```
 
-El servidor backend estará corriendo en http://localhost:3010 y el frontend estará disponible en http://localhost:3000.
+## 🔧 Scripts Disponibles
 
-## Docker y PostgreSQL
+### Backend
 
-Este proyecto usa Docker para ejecutar una base de datos PostgreSQL. Así es cómo ponerlo en marcha:
-
-Instala Docker en tu máquina si aún no lo has hecho. Puedes descargarlo desde aquí.
-Navega al directorio raíz del proyecto en tu terminal.
-Ejecuta el siguiente comando para iniciar el contenedor Docker:
-
-```
-docker-compose up -d
+```bash
+npm run dev          # Servidor desarrollo con hot reload
+npm run build        # Compilar TypeScript
+npm run start        # Servidor producción
+npm run prisma:reset # Resetear base de datos
 ```
 
-Esto iniciará una base de datos PostgreSQL en un contenedor Docker. La bandera -d corre el contenedor en modo separado, lo que significa que se ejecuta en segundo plano.
+### Frontend
 
-Para acceder a la base de datos PostgreSQL, puedes usar cualquier cliente PostgreSQL con los siguientes detalles de conexión:
-
-- Host: localhost
-- Port: 5432
-- User: postgres
-- Password: password
-- Database: mydatabase
-
-Por favor, reemplaza User, Password y Database con el usuario, la contraseña y el nombre de la base de datos reales especificados en tu archivo .env.
-
-Para detener el contenedor Docker, ejecuta el siguiente comando:
-
+```bash
+npm run dev          # Servidor desarrollo
+npm run build        # Build para producción
+npm run preview      # Preview del build
+npm run lint         # Ejecutar ESLint
 ```
-docker-compose down
+
+## 🌐 Endpoints de la API
+
+### Candidatos
+
+- `GET /api/candidates` - Listar candidatos (con paginación)
+- `POST /api/candidates` - Crear candidato
+- `GET /api/candidates/:id` - Obtener candidato por ID
+- `PUT /api/candidates/:id` - Actualizar candidato
+- `DELETE /api/candidates/:id` - Eliminar candidato
+- `POST /api/candidates/:id/cv` - Subir CV
+
+## 🎯 Uso de la Aplicación
+
+1. **Acceder al formulario**: Ve a `http://localhost:5173/candidates/add`
+2. **Autocompletado**: Haz clic en campos como "Nombre", "Institución", "Empresa" para ver sugerencias
+3. **Validación**: Los errores aparecen en tiempo real mientras escribes
+4. **Envío**: Al enviar exitosamente, verás una notificación y serás redirigido al home
+
+## 🐛 Solución de Problemas
+
+### Puerto en uso
+
+```bash
+# Matar procesos en puerto 3010 (backend)
+lsof -ti:3010 | xargs kill -9
+
+# Matar procesos en puerto 5173 (frontend)
+lsof -ti:5173 | xargs kill -9
 ```
+
+### Problemas con base de datos
+
+```bash
+# Resetear base de datos
+cd backend
+npx prisma migrate reset
+npx prisma generate
+```
+
+### Problemas con dependencias
+
+```bash
+# Limpiar cache y reinstalar
+rm -rf node_modules package-lock.json
+npm install
+```
+
+## 🤝 Contribución
+
+1. Fork el proyecto
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 📝 Licencia
+
+Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
+
+## 👥 Autores
+
+- **Tu Nombre** - _Desarrollo inicial_ - [TuGitHub](https://github.com/tuusuario)
+
+## 🙏 Agradecimientos
+
+- Material-UI por los componentes
+- Prisma por el ORM
+- React Hook Form por el manejo de formularios
