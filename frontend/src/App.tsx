@@ -6,6 +6,8 @@ import { CandidateForm } from './components/CandidateForm';
 import { ThemeToggle } from './components/ThemeToggle';
 import { Breadcrumb } from './components/Breadcrumb';
 import { Home } from './pages/Home';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const getBreadcrumbItems = (pathname: string) => {
   if (pathname === '/candidates/add') {
@@ -47,6 +49,18 @@ function App() {
 
 const AppWithRouter = () => (
   <Router>
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
     <App />
   </Router>
 );

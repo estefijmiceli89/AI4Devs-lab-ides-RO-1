@@ -9,11 +9,9 @@ const defaultPrisma = new PrismaClient();
 const candidateSchema = z.object({
   firstName: z.string().min(1),
   lastName: z.string().min(1),
-  email: z
-    .string()
-    .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, {
-      message: 'Email inválido. Debe tener el formato nombre@dominio.tld',
-    }),
+  email: z.string().regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, {
+    message: 'Email inválido. Debe tener el formato nombre@dominio.tld',
+  }),
   phone: z.string().min(1),
   educationLevel: z.enum([
     'Primaria',
@@ -137,7 +135,9 @@ export const candidateController = {
   // Create a new candidate
   async createCandidate(req: Request, res: Response) {
     try {
+      console.log('Received data:', req.body);
       const validatedData = candidateSchema.parse(req.body);
+      console.log('Validated data:', validatedData);
       const candidate = await defaultPrisma.candidate.create({
         data: {
           ...validatedData,
@@ -152,10 +152,13 @@ export const candidateController = {
       });
       return res.status(201).json(candidate);
     } catch (error) {
+      console.error('Error creating candidate:', error);
       if (error instanceof z.ZodError) {
         return res.status(400).json({ error: error.errors });
       }
-      return res.status(500).json({ error: 'Error creating candidate' });
+      return res
+        .status(500)
+        .json({ error: 'Error creating candidate', details: error.message });
     }
   },
 
