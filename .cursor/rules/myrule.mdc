@@ -1,0 +1,13 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Regla: myrule
+
+**Descripción:**
+Analiza el proyecto, extrae patrones de codificación y sugiérelos como estándar.
+
+**Aplicar a:** all
+
+**Acción:** learn_and_apply
