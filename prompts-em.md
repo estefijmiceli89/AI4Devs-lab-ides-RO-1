@@ -1,80 +1,137 @@
-Prompts Iniciales - Sistema ATS para Añadir Candidatos
-📋 Historia de Usuario Principal
+# Sistema ATS - Prompts de Desarrollo Completo
+
+> **Documento de especificaciones técnicas y prompts para implementación de sistema ATS**  
+> Versión: 1.0  
+> Fecha: 2025  
+
+# Prompts Iniciales - Sistema ATS para Añadir Candidatos
+
+## 📋 Historia de Usuario Principal
 Como reclutador del sistema ATS,
 Quiero tener la capacidad de añadir candidatos al sistema de manera eficiente,
 Para que pueda gestionar sus datos y procesos de selección de forma organizada y profesional.
-🎯 Valor de Negocio
 
-Centralizar información de candidatos
-Acelerar el proceso de selección
-Reducir tiempo de entrenamiento para nuevos reclutadores
-Mejorar la experiencia del usuario final
+## 🎯 Valor de Negocio
+- Centralizar información de candidatos
+- Acelerar el proceso de selección
+- Reducir tiempo de entrenamiento para nuevos reclutadores
+- Mejorar la experiencia del usuario final
 
-📖 Épica: Gestión de Candidatos ATS
-🏷️ Criterios de Aceptación Generales
-Funcionalidad Core
+## 📖 Épica: Gestión de Candidatos ATS
 
-Accesibilidad de la función: Botón/enlace claramente visible para añadir candidato desde dashboard principal
-Formulario completo: Captura todos los datos estructurados del candidato
-Carga de documentos: Soporte para CV en formato PDF o DOCX
-Confirmación de éxito: Mensaje claro tras añadir candidato exitosamente
+## 🏷 Criterios de Aceptación Generales
 
-Validación y Manejo de Errores
+### Funcionalidad Core
+- Accesibilidad de la función: Botón/enlace claramente visible para añadir candidato desde dashboard principal
+- Formulario completo: Captura todos los datos estructurados del candidato
+- Carga de documentos: Soporte para CV en formato PDF o DOCX
+- Confirmación de éxito: Mensaje claro tras añadir candidato exitosamente
 
-Validación de datos: Campos obligatorios, formato de email válido, validaciones de negocio
-Manejo de excepciones: Mensajes apropiados para errores de servidor/conexión
-Feedback visual: Indicadores de carga, estados de error y éxito
+### Validación y Manejo de Errores
+- Validación de datos: Campos obligatorios, formato de email válido, validaciones de negocio
+- Manejo de excepciones: Mensajes apropiados para errores de servidor/conexión
+- Feedback visual: Indicadores de carga, estados de error y éxito
 
-Experiencia de Usuario
+### Experiencia de Usuario
+- Interfaz intuitiva: Fácil de usar, minimiza tiempo de entrenamiento
+- Autocompletado: Funcionalidades para campos de educación y experiencia
+- Diseño moderno: Estilo minimalista y profesional
+- Accesibilidad: Compatible con diferentes dispositivos y navegadores
 
-Interfaz intuitiva: Fácil de usar, minimiza tiempo de entrenamiento
-Autocompletado: Funcionalidades para campos de educación y experiencia
-Diseño moderno: Estilo minimalista y profesional
-Accesibilidad: Compatible con diferentes dispositivos y navegadores
+### Calidad Técnica
+- Buenas prácticas Frontend: Código limpio, componentización, manejo de estado
+- Buenas prácticas Backend: API RESTful, validaciones, seguridad
+- Buenas prácticas Base de Datos: Normalización, índices, constraints
 
-Calidad Técnica
+## STACK TECNOLÓGICO ACTUAL:
+- **Backend:** Node.js, Express.js, TypeScript, Prisma ORM, PostgreSQL, Multer, Zod
+- **Frontend:** React 19, TypeScript, Vite, Material-UI, React Hook Form, Yup, React Router
+- **Base de Datos:** PostgreSQL con Docker
+- **Funcionalidades:** CRUD candidatos, subida de CVs, autocompletado inteligente, validación en tiempo real
 
-Buenas prácticas Frontend: Código limpio, componentización, manejo de estado
-Buenas prácticas Backend: API RESTful, validaciones, seguridad
-Buenas prácticas Base de Datos: Normalización, índices, constraints
+## FUNCIONALIDADES CORE IMPLEMENTADAS:
 
-🎫 TICKET 1: Base de Datos - Modelo de Candidatos
-📝 Historia de Usuario
+### ✅ Backend:
+**OBJETIVO:** Implementar backend completo con API REST, base de datos y manejo de archivos para sistema ATS.
+
+**STACK:** Node.js + Express + TypeScript + Prisma + PostgreSQL + Multer + Zod
+
+**OUTPUT:**
+- API REST completa (/api/candidates, /api/candidates/:id/cv)
+- Validaciones con Zod y manejo de errores
+- Subida y descarga de CVs (PDF/DOCX, max 5MB)
+- Paginación, filtrado y búsqueda
+- Base de datos normalizada con Prisma
+- CORS configurado para desarrollo
+
+### 🔧 API ENDPOINTS:
+```
+GET /api/candidates      # Listar con paginación
+POST /api/candidates     # Crear candidato
+GET /api/candidates/:id  # Obtener por ID
+PUT /api/candidates/:id  # Actualizar candidato
+DELETE /api/candidates/:id # Eliminar candidato
+POST /api/candidates/:id/cv # Subir CV
+GET /api/candidates/:id/cv  # Descargar CV
+```
+
+### ✅ Frontend:
+**OBJETIVO:** Crear interfaz React completa con formulario avanzado, autocompletado inteligente y validación en tiempo real.
+
+**STACK:** React 19 + TypeScript + Vite + Material-UI + React Hook Form + Yup + React Router
+
+**OUTPUT:**
+- Formulario de candidato con validación en tiempo real
+- Autocompletado inteligente en 6 campos (nombre, apellido, institución, título, puesto actual, empresa actual)
+- Subida de CVs con drag & drop
+- Notificaciones toast para feedback
+- Validación de campos avanzada (teléfonos únicos, espacios permitidos)
+- Navegación y routing completo
+- Diseño responsive con Material-UI
+
+### ✅ Base de Datos:
+- Modelo Candidate completo con 18 campos
+- Enums para niveles educativos en español
+- Índices optimizados para búsquedas
+- Migraciones y seeds configurados
+
+---
+
+## 🎫 TICKET 1: Base de Datos - Modelo de Candidatos
+
+### 📝 Historia de Usuario
 Como desarrollador del sistema,
 Quiero crear un modelo de datos robusto para candidatos,
 Para que la información se almacene de forma estructurada y eficiente.
-✅ Criterios de Aceptación
 
-Modelo de candidato creado en Prisma con todos los campos requeridos
-Enum definido para educación (experiencia ahora es numérica)
-Validaciones a nivel de base de datos implementadas
-Índices apropiados para consultas frecuentes
-Migración ejecutada exitosamente
-Datos de prueba disponibles para testing
-Tests unitarios de modelo implementados y pasando
+### ✅ Criterios de Aceptación
+- Modelo de candidato creado en Prisma con todos los campos requeridos
+- Enum definido para educación (experiencia ahora es numérica)
+- Validaciones a nivel de base de datos implementadas
+- Índices apropiados para consultas frecuentes
+- Migración ejecutada exitosamente
+- Datos de prueba disponibles para testing
+- Tests unitarios de modelo implementados y pasando
 
-🤖 Prompt para IA
+### 🤖 Prompt para IA
 Necesito crear un modelo de datos profesional para candidatos en un sistema ATS usando Prisma y PostgreSQL, siguiendo las mejores prácticas de base de datos.
 
-REQUERIMIENTOS DEL MODELO:
+**REQUERIMIENTOS DEL MODELO:**
 
-📊 CAMPOS BÁSICOS:
-
+#### 📊 CAMPOS BÁSICOS:
 - id (auto-incremental, primary key)
 - firstName (string, obligatorio, max 100 chars)
 - lastName (string, obligatorio, max 100 chars)
 - email (string, único, obligatorio, validación email)
 - phone (string, obligatorio, formato internacional)
 
-📚 EDUCACIÓN (campos estructurados):
-
+#### 📚 EDUCACIÓN (campos estructurados):
 - educationLevel (enum: PRIMARY, SECONDARY, TERTIARY, UNIVERSITY, POSTGRADUATE, DOCTORATE)
 - institution (string, max 200 chars)
 - degree (string, max 150 chars)
 - graduationYear (integer, entre 1950 y año actual + 4)
 
-💼 EXPERIENCIA LABORAL (campos estructurados):
-
+#### 💼 EXPERIENCIA LABORAL (campos estructurados):
 - currentPosition (string, max 100 chars)
 - currentCompany (string, max 150 chars)
 - totalExperience (integer, años de experiencia total, min 0, max 50)
@@ -83,22 +140,20 @@ REQUERIMIENTOS DEL MODELO:
 - endDate (date, opcional, debe ser mayor a startDate si se especifica)
 - experienceDescription (text, max 2000 chars)
 
-📎 ARCHIVOS Y METADATA:
-
+#### 📎 ARCHIVOS Y METADATA:
 - cvPath (string, opcional, ruta del archivo CV)
 - createdAt (datetime, auto-generado)
 - updatedAt (datetime, auto-actualizado)
 
-MEJORES PRÁCTICAS A IMPLEMENTAR:
-✅ Constraints de base de datos apropiados
-✅ Índices en campos de búsqueda frecuente (email, nombre)
-✅ Validaciones de integridad referencial
-✅ Nombres de campos consistentes (camelCase)
-✅ Comentarios descriptivos en el esquema
-✅ Configuración de cascade deletes si aplica
+**MEJORES PRÁCTICAS A IMPLEMENTAR:**
+- ✅ Constraints de base de datos apropiados
+- ✅ Índices en campos de búsqueda frecuente (email, nombre)
+- ✅ Validaciones de integridad referencial
+- ✅ Nombres de campos consistentes (camelCase)
+- ✅ Comentarios descriptivos en el esquema
+- ✅ Configuración de cascade deletes si aplica
 
-TAREAS ESPECÍFICAS:
-
+**TAREAS ESPECÍFICAS:**
 1. Crear modelo Candidate en schema.prisma con todos los campos y constraints
 2. Definir enum EducationLevel (totalExperience ahora es integer)
 3. Agregar validaciones y reglas de negocio
@@ -109,56 +164,54 @@ TAREAS ESPECÍFICAS:
 
 Por favor implementa el modelo siguiendo las mejores prácticas de Prisma y PostgreSQL.
 
-🎫 TICKET 2: Backend - API para Gestión de Candidatos
-📝 Historia de Usuario
+---
+
+## 🎫 TICKET 2: Backend - API para Gestión de Candidatos
+
+### 📝 Historia de Usuario
 Como frontend de la aplicación,
 Quiero consumir APIs robustas para gestionar candidatos,
 Para que pueda ofrecer una experiencia de usuario fluida y confiable.
-✅ Criterios de Aceptación
 
-Endpoint POST /api/candidates - Crear candidato con validaciones completas
-Endpoint GET /api/candidates - Listar candidatos con paginación
-Endpoint GET /api/candidates/:id - Obtener candidato específico
-Manejo de archivos CV (upload, validación, almacenamiento)
-Validaciones robustas con mensajes descriptivos
-Manejo de errores consistente y profesional
-Logging apropiado para debugging
-Documentación de API con ejemplos
-Tests unitarios y de integración para todos los endpoints
+### ✅ Criterios de Aceptación
+- Endpoint POST /api/candidates - Crear candidato con validaciones completas
+- Endpoint GET /api/candidates - Listar candidatos con paginación
+- Endpoint GET /api/candidates/:id - Obtener candidato específico
+- Manejo de archivos CV (upload, validación, almacenamiento)
+- Validaciones robustas con mensajes descriptivos
+- Manejo de errores consistente y profesional
+- Logging apropiado para debugging
+- Documentación de API con ejemplos
+- Tests unitarios y de integración para todos los endpoints
 
-🤖 Prompt para IA
+### 🤖 Prompt para IA
 Necesito crear una API REST profesional para manejar candidatos en un sistema ATS usando Express.js, TypeScript y Prisma, siguiendo las mejores prácticas de desarrollo backend.
 
-ENDPOINTS REQUERIDOS:
+**ENDPOINTS REQUERIDOS:**
 
-🔧 POST /api/candidates - Crear candidato
-
+#### 🔧 POST /api/candidates - Crear candidato
 - Validación completa de todos los campos
 - Manejo de archivos CV (PDF/DOCX, max 5MB)
 - Sanitización de datos de entrada
 - Respuesta estructurada con candidato creado
 
-📋 GET /api/candidates - Listar candidatos
-
+#### 📋 GET /api/candidates - Listar candidatos
 - Paginación (limit, offset)
 - Filtros opcionales (nombre, email, educación, experiencia)
 - Ordenamiento (por fecha, nombre, etc.)
 - Respuesta con metadata de paginación
 
-👤 GET /api/candidates/:id - Obtener candidato específico
-
+#### 👤 GET /api/candidates/:id - Obtener candidato específico
 - Validación de ID válido
 - Respuesta completa del candidato
 - Manejo de candidato no encontrado
 
-📎 POST /api/candidates/:id/cv - Subir/actualizar CV
-
+#### 📎 POST /api/candidates/:id/cv - Subir/actualizar CV
 - Validación de archivo (tipo, tamaño)
 - Almacenamiento seguro
 - Actualización de cvPath en base de datos
 
-🧪 TESTING REQUERIDO:
-
+#### 🧪 TESTING REQUERIDO:
 - Tests unitarios para controladores
 - Tests de integración para endpoints
 - Tests de validación de datos
@@ -167,10 +220,9 @@ ENDPOINTS REQUERIDOS:
 - Mocking de base de datos para tests
 - Coverage mínimo del 80%
 
-MEJORES PRÁCTICAS A IMPLEMENTAR:
+**MEJORES PRÁCTICAS A IMPLEMENTAR:**
 
-🛡️ VALIDACIÓN Y SEGURIDAD:
-
+#### 🛡 VALIDACIÓN Y SEGURIDAD:
 - express-validator para validación de datos
 - Sanitización de inputs
 - Rate limiting
@@ -178,39 +230,34 @@ MEJORES PRÁCTICAS A IMPLEMENTAR:
 - Validación de tipos de archivos
 - Prevención de ataques comunes (XSS, injection)
 
-📝 ESTRUCTURA DE RESPUESTAS:
-
+#### 📝 ESTRUCTURA DE RESPUESTAS:
 - Formato consistente: { success, data, message, errors }
 - Códigos de estado HTTP apropiados
 - Mensajes de error descriptivos y user-friendly
 - Respuestas de éxito con datos relevantes
 
-🔍 MANEJO DE ERRORES:
-
+#### 🔍 MANEJO DE ERRORES:
 - Try-catch en todos los endpoints
 - Logging estructurado (winston o similar)
 - Errores de validación detallados
 - Manejo de errores de base de datos
 - Respuestas de error consistentes
 
-📂 MANEJO DE ARCHIVOS:
-
+#### 📂 MANEJO DE ARCHIVOS:
 - Multer para upload de archivos
 - Validación de tipo MIME
 - Límites de tamaño configurables
 - Almacenamiento seguro (local o cloud)
 - Nombres de archivo únicos
 
-🏗️ ARQUITECTURA:
-
+#### 🏗 ARQUITECTURA:
 - Separación en controladores, servicios, middlewares
 - Validadores reutilizables
 - Interfaces TypeScript apropiadas
 - Configuración centralizada
 - Testing helpers incluidos
 
-TAREAS ESPECÍFICAS:
-
+**TAREAS ESPECÍFICAS:**
 1. Configurar Express con TypeScript y middlewares
 2. Crear controladores para cada endpoint
 3. Implementar validadores con express-validator
@@ -221,66 +268,67 @@ TAREAS ESPECÍFICAS:
 8. Crear documentación de API
 9. Escribir tests unitarios básicos
 
-Genera código limpio, bien documentado y siguiendo las mejores prácticas de Node.js/Express.
+- Genera código limpio, bien documentado y siguiendo las mejores prácticas de Node.js/Express.
+- Implementa el backend completo con estas especificaciones exactas, incluyendo manejo robusto de errores, validaciones y documentación API.
+- **SEED DATA REALISTA:** Incluir al menos 15 candidatos con datos variados en español, algunos con CV paths simulados.
+- **MANEJO DE ERRORES:** Implementar middleware global de manejo de errores con logging estructurado.
 
-🎫 TICKET 3: Frontend - Interface de Usuario para Candidatos
-📝 Historia de Usuario
+---
+
+## 🎫 TICKET 3: Frontend - Interface de Usuario para Candidatos
+
+### 📝 Historia de Usuario
 Como reclutador,
 Quiero una interfaz moderna e intuitiva para añadir candidatos,
 Para que pueda completar la tarea de forma eficiente y sin errores.
-✅ Criterios de Aceptación
 
-Dashboard principal con acceso claro a "Añadir Candidato"
-Formulario completo con todos los campos estructurados
-Validación en tiempo real con feedback visual
-Subida de archivos drag-and-drop
-Autocompletado en campos aplicables
-Mensajes de éxito/error profesionales
-Diseño responsive y accesible
-Lista de candidatos con funcionalidades básicas
-Experiencia de usuario fluida y moderna
-Tests unitarios de componentes críticos implementados
+### ✅ Criterios de Aceptación
+- Dashboard principal con acceso claro a "Añadir Candidato"
+- Formulario completo con todos los campos estructurados
+- Validación en tiempo real con feedback visual
+- Subida de archivos drag-and-drop
+- Autocompletado en campos aplicables
+- Mensajes de éxito/error profesionales
+- Diseño responsive y accesible
+- Lista de candidatos con funcionalidades básicas
+- Experiencia de usuario fluida y moderna
+- Tests unitarios de componentes críticos implementados
 
-🤖 Prompt para IA
+### 🤖 Prompt para IA
 Necesito crear una interfaz de usuario moderna y profesional en React con TypeScript para un sistema ATS de gestión de candidatos, siguiendo las mejores prácticas de desarrollo frontend.
 
-COMPONENTES REQUERIDOS:
+**COMPONENTES REQUERIDOS:**
 
-🏠 DASHBOARD PRINCIPAL:
-
+#### 🏠 DASHBOARD PRINCIPAL:
 - Header con navegación y branding
 - Sidebar o navegación principal
 - Botón prominente "Añadir Candidato"
 - Resumen de estadísticas (candidatos totales, recientes)
 - Lista de candidatos recientes con acciones básicas
 
-📝 FORMULARIO DE CANDIDATO:
+#### 📝 FORMULARIO DE CANDIDATO:
 Secciones organizadas:
-
 1. Información Personal (nombre, apellido, email, teléfono)
 2. Educación (nivel, institución, título, año)
 3. Experiencia Laboral (puesto, empresa, años numéricos, fechas, descripción)
 4. Carga de CV (drag-and-drop, PDF/DOCX)
 
-📋 LISTA DE CANDIDATOS:
-
+#### 📋 LISTA DE CANDIDATOS:
 - Tabla responsive con datos clave
 - Paginación funcional
 - Filtros básicos (nombre, email, educación)
 - Acciones por candidato (ver, editar, descargar CV)
 
-CARACTERÍSTICAS UX/UI:
+**CARACTERÍSTICAS UX/UI:**
 
-🎨 DISEÑO MODERNO Y MINIMALISTA:
-
+#### 🎨 DISEÑO MODERNO Y MINIMALISTA:
 - Paleta de colores profesional y limpia
 - Tipografía clara y legible
 - Espaciado consistente y breathing room
 - Iconografía coherente (Lucide React o similar)
 - Micro-interacciones sutiles
 
-📱 RESPONSIVE Y ACCESIBLE:
-
+#### 📱 RESPONSIVE Y ACCESIBLE:
 - Mobile-first approach
 - Breakpoints apropiados (sm, md, lg, xl)
 - Navegación adaptativa
@@ -288,59 +336,52 @@ CARACTERÍSTICAS UX/UI:
 - Soporte para screen readers
 - Navegación por teclado
 
-⚡ EXPERIENCIA DE USUARIO:
-
+#### ⚡ EXPERIENCIA DE USUARIO:
 - Loading states en todas las acciones
 - Feedback visual inmediato
 - Transiciones suaves
 - Error boundaries para manejo de errores
 - Confirmaciones para acciones destructivas
 
-FUNCIONALIDADES AVANZADAS:
+**FUNCIONALIDADES AVANZADAS:**
 
-✨ VALIDACIÓN INTELIGENTE:
-
+#### ✨ VALIDACIÓN INTELIGENTE:
 - Validación en tiempo real (no solo en submit)
 - Mensajes de error contextual
 - Indicadores visuales de campos válidos/inválidos
 - Validación de email en tiempo real
 - Formato de teléfono con máscara
 
-🔍 AUTOCOMPLETADO:
-
+#### 🔍 AUTOCOMPLETADO:
 - Instituciones educativas comunes
 - Empresas populares
 - Títulos/carreras frecuentes
 - Implementar con datos mock inicial
 
-📎 MANEJO DE ARCHIVOS:
-
+#### 📎 MANEJO DE ARCHIVOS:
 - Drag and drop area elegante
 - Preview de archivos seleccionados
 - Validación de tipo y tamaño
 - Progress indicator para uploads
 - Manejo de errores de subida
 
-🛠️ MEJORES PRÁCTICAS FRONTEND:
+**🛠 MEJORES PRÁCTICAS FRONTEND:**
 
-📦 ARQUITECTURA:
-
+#### 📦 ARQUITECTURA:
 - Componentes funcionales con hooks
 - Custom hooks para lógica reutilizable
 - Context API para estado global
 - Separación de concerns clara
 - Interfaces TypeScript bien definidas
 
-🎯 PERFORMANCE:
-
+#### 🎯 PERFORMANCE:
 - Lazy loading de componentes
 - Memoización donde corresponda
 - Optimistic updates
 - Debouncing en búsquedas
 - Paginación eficiente
 
-🧪 CALIDAD Y TESTING:
-
+#### 🧪 CALIDAD Y TESTING:
 - PropTypes o TypeScript interfaces
 - Error boundaries apropiados
 - Loading y error states
@@ -350,8 +391,7 @@ FUNCIONALIDADES AVANZADAS:
 - Mocking apropiado de APIs
 - Test coverage reports
 
-TECNOLOGÍAS A USAR:
-
+**TECNOLOGÍAS A USAR:**
 - React 18+ con TypeScript
 - React Hook Form para formularios
 - React Query/SWR para API calls
@@ -361,8 +401,7 @@ TECNOLOGÍAS A USAR:
 - **Jest + React Testing Library para testing**
 - **MSW (Mock Service Worker) para mocking APIs**
 
-TAREAS ESPECÍFICAS:
-
+**TAREAS ESPECÍFICAS:**
 1. Configurar estructura del proyecto y routing
 2. Crear componentes base (Layout, Header, Sidebar)
 3. Implementar Dashboard con estadísticas
@@ -378,62 +417,99 @@ TAREAS ESPECÍFICAS:
 13. **Implementar tests de integración para flujos principales**
 14. **Configurar coverage reports y CI/CD para tests**
 
-El resultado debe ser una aplicación profesional que un reclutador pueda usar intuitivamente sin entrenamiento previo.
+**CAMPOS CON AUTOCOMPLETADO:**
+Implementar autocompletado en estos 6 campos específicos:
+1. `firstName` (nombre)
+2. `lastName` (apellido)
+3. `institution` (institución)
+4. `degree` (título)
+5. `currentPosition` (puesto actual)
+6. `currentCompany` (empresa actual)
 
-🔧 Consideraciones Técnicas Adicionales
-📋 Validaciones Específicas
+**LAYOUT Y DISEÑO:**
+- Formulario en Container con maxWidth="sm"
+- Campos organizados en Grid con spacing apropiado
+- Validación visual con colores Material-UI
+- Loading states durante envío
+- Responsive design completo
 
-Email: Formato RFC 5322 válido
-Años de experiencia: Campo numérico (0-50 años)
-Fechas: Lógica de negocio (fecha fin >= fecha inicio)
-Archivos: MIME type validation, tamaño máximo 5MB
-Campos obligatorios: firstName, lastName, email, phone
+- Implementa el frontend completo con estas especificaciones exactas, asegurando una experiencia de usuario fluida y profesional.
+- El resultado debe ser una aplicación profesional que un reclutador pueda usar intuitivamente sin entrenamiento previo.
 
-🚀 Performance y Optimización
+---
 
-Lazy loading de componentes pesados
-Paginación server-side para listas grandes
-Caching inteligente de autocompletados
-Optimistic updates para mejor UX
-Compresión de archivos subidos
+## 🔧 Consideraciones Técnicas Adicionales
 
-🔒 Seguridad
+### 📋 Validaciones Específicas
+- **Email:** Formato RFC 5322 válido
+- **Años de experiencia:** Campo numérico (0-50 años)
+- **Fechas:** Lógica de negocio (fecha fin >= fecha inicio)
+- **Archivos:** MIME type validation, tamaño máximo 5MB
+- **Campos obligatorios:** firstName, lastName, email, phone
 
-Sanitización de inputs en backend
-Validación de archivos subidos
-Rate limiting en APIs críticas
-CORS configurado apropiadamente
-Logging de acciones sensibles
+### 🚀 Performance y Optimización
+- Lazy loading de componentes pesados
+- Paginación server-side para listas grandes
+- Caching inteligente de autocompletados
+- Optimistic updates para mejor UX
+- Compresión de archivos subidos
 
-📊 Definición de Terminado (DoD)
-Para cada ticket:
+### 🔒 Seguridad
+- Sanitización de inputs en backend
+- Validación de archivos subidos
+- Rate limiting en APIs críticas
+- CORS configurado apropiadamente
+- Logging de acciones sensibles
 
-Código implementado y funcionando
-Validaciones implementadas y testeadas
-Manejo de errores apropiado
-Tests unitarios escritos y pasando (coverage mínimo 75%)
-Tests de integración para flujos críticos
-Documentación actualizada
-Review de código completado
-Deploy en ambiente de desarrollo exitoso
+---
 
-Para la épica completa:
+## 📊 Definición de Terminado (DoD)
 
-Flujo end-to-end funcionando
-Todos los criterios de aceptación cumplidos
-Suite completa de tests implementada y pasando
-Coverage de código >= 75% en cada capa
-Performance acceptable (< 3s load time)
-Compatibilidad cross-browser verificada
-Accesibilidad básica implementada
-Documentación de usuario creada
-CI/CD pipeline configurado y funcionando
+### Para cada ticket:
+- Código implementado y funcionando
+- Validaciones implementadas y testeadas
+- Manejo de errores apropiado
+- Tests unitarios escritos y pasando (coverage mínimo 75%)
+- Tests de integración para flujos críticos
+- Documentación actualizada
+- Review de código completado
+- Deploy en ambiente de desarrollo exitoso
 
-🎯 Métricas de Éxito
+### Para la épica completa:
+- Flujo end-to-end funcionando
+- Todos los criterios de aceptación cumplidos
+- Suite completa de tests implementada y pasando
+- Coverage de código >= 75% en cada capa
+- Performance acceptable (< 3s load time)
+- Compatibilidad cross-browser verificada
+- Accesibilidad básica implementada
+- Documentación de usuario creada
+- CI/CD pipeline configurado y funcionando
 
-Funcionalidad: 100% de criterios de aceptación cumplidos
-Testing: Coverage >= 75% en todas las capas, 0 tests fallando
-Performance: Tiempo de carga < 3 segundos
-UX: Tarea completable por usuario nuevo en < 5 minutos
-Calidad: 0 errores críticos en testing manual
-Accesibilidad: Cumple estándares WCAG AA básicos
+---
+
+## 📝 NOTAS DE IMPLEMENTACIÓN
+
+### ORDEN DE DESARROLLO RECOMENDADO:
+1. Setup inicial del proyecto y configuración
+2. Base de datos y backend API
+3. Frontend básico con formulario
+4. Integración y funcionalidades avanzadas
+5. Testing y refinamiento
+
+### PUNTOS CRÍTICOS DE VALIDACIÓN:
+- ✅ Autocompletado funcionando en 6 campos específicos
+- ✅ Validación en tiempo real (onChange mode)
+- ✅ Upload de CVs con validación de tipo y tamaño
+- ✅ Notificaciones toast para feedback
+- ✅ Redirección automática después de guardar
+- ✅ API endpoints todos operativos
+- ✅ Base de datos poblada con datos de prueba
+
+### 🎯 Métricas de Éxito
+- **Funcionalidad:** 100% de criterios de aceptación cumplidos
+- **Testing:** Coverage >= 75% en todas las capas, 0 tests fallando
+- **Performance:** Tiempo de carga < 3 segundos
+- **UX:** Tarea completable por usuario nuevo en < 5 minutos
+- **Calidad:** 0 errores críticos en testing manual
+- **Accesibilidad:** Cumple estándares WCAG AA básicos
