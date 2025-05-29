@@ -117,8 +117,6 @@ AI4Devs-lab-ides-RO-1/
 
 ```bash
 npm run dev          # Servidor desarrollo con hot reload
-npm run build        # Compilar TypeScript
-npm run start        # Servidor producción
 npm run prisma:reset # Resetear base de datos
 ```
 
@@ -126,8 +124,6 @@ npm run prisma:reset # Resetear base de datos
 
 ```bash
 npm run dev          # Servidor desarrollo
-npm run build        # Build para producción
-npm run preview      # Preview del build
 npm run lint         # Ejecutar ESLint
 ```
 
@@ -192,10 +188,4 @@ Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) par
 
 ## 👥 Autores
 
-- **Tu Nombre** - _Desarrollo inicial_ - [TuGitHub](https://github.com/tuusuario)
-
-## 🙏 Agradecimientos
-
-- Material-UI por los componentes
-- Prisma por el ORM
-- React Hook Form por el manejo de formularios
+- **Estefania Miceli** - _Desarrollo inicial_ - [TuGitHub](https://github.com/estefijmiceli89)

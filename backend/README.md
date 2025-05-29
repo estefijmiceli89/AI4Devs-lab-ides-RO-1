@@ -73,10 +73,6 @@ npx prisma db seed
 ```bash
 # Desarrollo (con hot reload)
 npm run dev
-
-# Producción
-npm run build
-npm start
 ```
 
 El servidor estará disponible en: `http://localhost:3010`
@@ -268,7 +264,6 @@ enum EducationLevel {
 # Desarrollo
 npm run dev              # Servidor con hot reload
 npm run build            # Compilar TypeScript
-npm start               # Servidor producción
 
 # Base de datos
 npx prisma migrate dev   # Ejecutar migraciones
@@ -287,12 +282,6 @@ npm run type-check      # Verificar tipos
 ```bash
 # Ejecutar tests
 npm test
-
-# Tests con coverage
-npm run test:coverage
-
-# Tests en modo watch
-npm run test:watch
 ```
 
 ## 🐛 Solución de Problemas
@@ -359,21 +348,4 @@ npm run dev
 
 # Logs de base de datos
 npx prisma studio
-```
-
-## 🚀 Despliegue
-
-### Variables de entorno para producción
-
-```env
-NODE_ENV=production
-DATABASE_URL="postgresql://user:password@host:5432/database"
-PORT=3010
-```
-
-### Build para producción
-
-```bash
-npm run build
-npm start
 ```

@@ -139,8 +139,6 @@ frontend/
 ```bash
 # Desarrollo
 npm run dev              # Servidor desarrollo con hot reload
-npm run build            # Build para producción
-npm run preview          # Preview del build de producción
 
 # Calidad de código
 npm run lint             # Ejecutar ESLint
@@ -222,33 +220,6 @@ export const candidateService = {
 - **Errores de validación**: Mostrados en campos específicos
 - **Errores de servidor**: Mensajes genéricos al usuario
 
-## 🧪 Testing
-
-```bash
-# Ejecutar tests
-npm test
-
-# Tests con coverage
-npm run test:coverage
-
-# Tests en modo watch
-npm run test:watch
-
-# Tests de componentes específicos
-npm test -- CandidateForm
-```
-
-### Estructura de Tests
-
-```
-src/
-├── __tests__/           # Tests unitarios
-├── components/
-│   └── __tests__/       # Tests de componentes
-└── hooks/
-    └── __tests__/       # Tests de hooks
-```
-
 ## 🐛 Solución de Problemas
 
 ### Error de conexión con API
@@ -288,37 +259,6 @@ lsof -ti:5173 | xargs kill -9
 
 # Usar puerto específico
 npm run dev -- --port 3000
-```
-
-## 🚀 Build y Despliegue
-
-### Build para Producción
-
-```bash
-npm run build
-```
-
-Los archivos se generan en `dist/` y están listos para servir estáticamente.
-
-### Preview Local
-
-```bash
-npm run preview
-```
-
-### Despliegue
-
-```bash
-# Ejemplo con Netlify
-npm run build
-# Subir carpeta dist/
-
-# Ejemplo con Vercel
-npx vercel --prod
-
-# Ejemplo con servidor estático
-npm run build
-npx serve dist
 ```
 
 ## 🔒 Seguridad
